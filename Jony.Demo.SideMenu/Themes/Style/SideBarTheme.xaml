@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- 一级菜单背景 -->
+    <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#232323"/>
+    
+    <!-- 一级菜单背景 -->
+    <SolidColorBrush x:Key="SidebarSubBackgroundBrush" Color="#2C2C2C"/>
+
+    <!-- Hover -->
+    <SolidColorBrush x:Key="SidebarHoverBrush" Color="#2F2F2F"/>
+
+    <!-- 激活文字颜色 -->
+    <SolidColorBrush x:Key="SidebarActiveBrush" Color="#0EA5E9"/>
+
+    <!-- 默认文字颜色 -->
+    <SolidColorBrush x:Key="SidebarTextBrush" Color="#E5E7EB"/>
+</ResourceDictionary>

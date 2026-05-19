@@ -1,0 +1,171 @@
+﻿# ---------------------------
+# WPF / .NET 项目通用忽略规则
+# ---------------------------
+
+## 编译输出目录
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Dd]ebug*/
+[Rr]elease*/
+x64/
+x86/
+[Aa][Rr][Mm]*/
+[Bb]uild/
+[Bb]uilds/
+dist/
+publish/
+
+## Rider / VS / VSCode 缓存
+.idea/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vs/
+
+## Windows 特定文件
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+## NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+# 忽略本地包缓存
+**/packages/
+!**/packages/build/
+# NuGet 还原文件
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## 临时文件
+*.tmp
+*.bak
+*.old
+*.log
+*.tlog
+*.cache
+*.pdb
+
+## Visual Studio 特定
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+
+# Auto-generated files
+Generated\ Files/
+
+## 编译中间文件
+*.obj
+*.dll
+*.exe
+*.mdb
+*.pdb
+*.idb
+*.tlh
+*.tli
+*.pch
+*.ipch
+*.ilk
+*.log
+*.lastcodeanalysissucceeded
+*.tlog
+*.vspscc
+*.vssscc
+
+## ReSharper / Rider
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+## StyleCop
+StyleCopReport.xml
+
+## NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+## MSTest 测试结果
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+## NUnit
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+
+## Coverage
+*.coverage
+*.coveragexml
+
+## JetBrains Rider
+.idea/
+*.sln.iml
+
+## VS Code
+.vscode/
+.history/
+
+## 备份与临时文件
+*.bak
+*.swp
+*.swo
+*.orig
+
+## 发布与安装包
+*.publishsettings
+*.azurePubxml
+*.pubxml.user
+app.publish/
+*.exe.config
+*.dll.config
+*.manifest
+
+## WPF 特定
+# 临时生成的资源与缓存
+*.g.cs
+*.g.i.cs
+*.baml
+*.xaml.cs~
+*.resources
+*.pri
+*.cachefile
+
+# 本地数据存储
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+
+# 配置文件（如需忽略敏感配置）
+# App.config.user
+# appsettings.Development.json
+
+## Git 特殊文件
+*.orig
+*.rej
+
+# ---------------------------
+# 自定义忽略（可根据项目调整）
+# ---------------------------
+# 本地文档与设计稿
+/docs/
+/design/
+/notes/
+*.psd
+*.ai
+
+# 本地调试配置文件
+local.settings.json
+.env

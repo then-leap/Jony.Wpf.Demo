@@ -1,0 +1,19 @@
+﻿<Window x:Class="Jony.Demo.ExportExcel.ExportPreviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="导出 Excel" Click="Export_Click" Width="120" Margin="5"/>
+            <Button Content="关闭" Click="Close" Width="80" Margin="5"/>
+        </StackPanel>
+
+        <!-- ✅ ScrollViewer + Viewbox 实现自适应缩放 -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="White">
+            <Viewbox Stretch="Uniform" StretchDirection="Both">
+                <Image x:Name="PreviewImage" Margin="10"/>
+            </Viewbox>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

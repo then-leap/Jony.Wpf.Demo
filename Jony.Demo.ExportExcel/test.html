@@ -1,0 +1,720 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🧪 综合测试面板 | 组件与交互测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.25s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* 亮色主题 (默认) */
+        :root {
+            --bg-body: #f4f7fc;
+            --bg-surface: #ffffff;
+            --text-primary: #1e2a3e;
+            --text-secondary: #2c3e50;
+            --text-muted: #5a6e7a;
+            --border-light: #dce5ef;
+            --border-focus: #3b82f6;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --btn-primary: #3b82f6;
+            --btn-primary-hover: #2563eb;
+            --btn-secondary: #64748b;
+            --btn-secondary-hover: #475569;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #10b981;
+            --table-stripe: #f8fafc;
+            --code-bg: #f1f5f9;
+            --log-bg: #f1f5f9;
+            --progress-bg: #e2e8f0;
+        }
+
+        /* 暗色主题 */
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-surface: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-light: #334155;
+            --border-focus: #60a5fa;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+            --btn-primary: #3b82f6;
+            --btn-primary-hover: #60a5fa;
+            --btn-secondary: #475569;
+            --btn-secondary-hover: #64748b;
+            --danger: #f87171;
+            --danger-hover: #ef4444;
+            --success: #34d399;
+            --table-stripe: #0f172a;
+            --code-bg: #0f172a;
+            --log-bg: #0f172a;
+            --progress-bg: #334155;
+        }
+
+        body {
+            background: var(--bg-body);
+            color: var(--text-primary);
+            font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 头部区域 */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .title-section h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--btn-primary), #8b5cf6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .title-section p {
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .live-clock {
+            font-family: monospace;
+            background: var(--bg-surface);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-light);
+        }
+
+        button {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+            button.primary {
+                background: var(--btn-primary);
+                border-color: var(--btn-primary);
+                color: white;
+            }
+
+                button.primary:hover {
+                    background: var(--btn-primary-hover);
+                    transform: translateY(-1px);
+                }
+
+            button.outline {
+                border-color: var(--border-light);
+            }
+
+                button.outline:hover {
+                    background: var(--btn-secondary);
+                    color: white;
+                    border-color: var(--btn-secondary);
+                }
+
+            button.danger {
+                border-color: var(--danger);
+                color: var(--danger);
+            }
+
+                button.danger:hover {
+                    background: var(--danger);
+                    color: white;
+                }
+
+        /* 网格布局 */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: var(--bg-surface);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-light);
+            transition: transform 0.1s ease;
+        }
+
+            .card h2 {
+                font-size: 1.4rem;
+                margin-bottom: 1.2rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                border-left: 4px solid var(--btn-primary);
+                padding-left: 0.75rem;
+            }
+
+            .card h3 {
+                font-size: 1.1rem;
+                margin: 1rem 0 0.6rem 0;
+                color: var(--text-secondary);
+            }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-light);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+            input:focus, select:focus, textarea:focus {
+                outline: none;
+                border-color: var(--border-focus);
+                box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+            }
+
+        .flex-row {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .counter-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-family: monospace;
+            background: var(--code-bg);
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 2rem;
+            min-width: 90px;
+            text-align: center;
+        }
+
+        .progress-demo {
+            margin: 1rem 0;
+        }
+
+        .progress-bar-container {
+            background: var(--progress-bg);
+            border-radius: 40px;
+            height: 12px;
+            width: 100%;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--btn-primary);
+            border-radius: 40px;
+            transition: width 0.2s ease;
+        }
+
+        .color-box {
+            width: 100%;
+            height: 100px;
+            border-radius: 1rem;
+            background: #3b82f6;
+            margin-top: 0.8rem;
+            border: 1px solid var(--border-light);
+            transition: background 0.1s;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.7rem 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        tbody tr:hover {
+            background: var(--table-stripe);
+        }
+
+        .log-area {
+            background: var(--log-bg);
+            border-radius: 1rem;
+            padding: 0.8rem;
+            height: 240px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            border: 1px solid var(--border-light);
+        }
+
+        .log-item {
+            padding: 0.3rem 0;
+            border-bottom: 1px dashed var(--border-light);
+            color: var(--text-secondary);
+        }
+
+        .view-width {
+            display: inline-block;
+            background: var(--code-bg);
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-light);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 760px) {
+            body {
+                padding: 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .badge {
+            background: var(--btn-primary);
+            color: white;
+            border-radius: 30px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="container">
+        <!-- 头部区域 -->
+        <div class="header">
+            <div class="title-section">
+                <h1>🧪 交互测试工坊</h1>
+                <p>表单 · 动态表格 · 主题切换 · 实时日志 · 响应式调试</p>
+            </div>
+            <div class="header-actions">
+                <div class="live-clock" id="liveClock">--:--:--</div>
+                <button id="themeToggleBtn" class="outline">🌓 暗色模式</button>
+                <button id="clearLogBtn" class="outline danger">🗑️ 清空日志</button>
+            </div>
+        </div>
+
+        <!-- 网格主区域: 左右两大块 -->
+        <div class="dashboard-grid">
+            <!-- 左侧: 表单 & 计数器 & 组件测试 -->
+            <div class="left-panel" style="display: flex; flex-direction: column; gap: 1.8rem;">
+                <!-- 卡片1: 表单测试 -->
+                <div class="card">
+                    <h2>📝 表单验证测试</h2>
+                    <form id="testForm">
+                        <div class="form-group">
+                            <label>👤 用户名</label>
+                            <input type="text" id="username" placeholder="例如: testuser" value="测试员01">
+                        </div>
+                        <div class="form-group">
+                            <label>📧 电子邮箱</label>
+                            <input type="email" id="email" placeholder="your@email.com" value="demo@test.com">
+                        </div>
+                        <div class="form-group">
+                            <label>💼 角色</label>
+                            <select id="role">
+                                <option value="前端开发">前端开发</option>
+                                <option value="后端开发">后端开发</option>
+                                <option value="全栈工程师" selected>全栈工程师</option>
+                                <option value="UI设计师">UI设计师</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>📝 备注 (测试textarea)</label>
+                            <textarea rows="2" id="remark" placeholder="测试多行文本组件...">这是一个用于测试的备注字段</textarea>
+                        </div>
+                        <div class="flex-row">
+                            <button type="button" id="submitFormBtn" class="primary">📋 记录表单数据</button>
+                            <button type="reset" id="resetFormBtn" class="outline">⟳ 重置</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 卡片2: 计数器 & 按钮测试 + API模拟 -->
+                <div class="card">
+                    <h2>⚡ 事件 & API 模拟</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap;">
+                        <div>
+                            <span class="counter-value" id="counterDisplay">0</span>
+                            <div class="flex-row" style="margin-top: 0.5rem;">
+                                <button id="incBtn" class="primary">➕ +1</button>
+                                <button id="decBtn" class="outline">➖ -1</button>
+                                <button id="resetCounterBtn" class="outline danger">重置</button>
+                            </div>
+                        </div>
+                        <div style="margin-top: 0.5rem;">
+                            <button id="alertTestBtn" class="outline">🔔 Alert测试</button>
+                            <button id="mockApiBtn" class="outline">📡 模拟API请求</button>
+                        </div>
+                    </div>
+                    <div class="progress-demo" style="margin-top: 1rem;">
+                        <label>📊 动态进度条 (交互测试)</label>
+                        <input type="range" id="progressSlider" min="0" max="100" value="35">
+                        <div class="progress-bar-container">
+                            <div class="progress-fill" id="progressFill" style="width: 35%;"></div>
+                        </div>
+                        <span id="progressValue" style="font-size: 0.8rem;">35%</span>
+                    </div>
+                </div>
+
+                <!-- 卡片3: 颜色选择 & 视觉组件 -->
+                <div class="card">
+                    <h2>🎨 视觉 & 滑块测试</h2>
+                    <div>
+                        <label>🎨 选取背景色 (改变下方色块)</label>
+                        <input type="color" id="colorPicker" value="#3b82f6">
+                        <div class="color-box" id="colorBox"></div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <label>📏 Range 滚动测试 (实时值)</label>
+                        <input type="range" id="rangeDemo" min="0" max="100" value="50">
+                        <p>当前值: <strong id="rangeValue">50</strong></p>
+                    </div>
+                    <div>
+                        <label>📋 测试 Checkbox 状态</label>
+                        <div class="flex-row">
+                            <label style="display: flex; gap: 0.4rem; align-items: center;">
+                                <input type="checkbox" id="acceptTerms"> 同意测试条款
+                            </label>
+                            <button id="checkTermsBtn" class="outline small">显示状态</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧: 日志区域 & 动态表格 & 响应式监控 -->
+            <div class="right-panel" style="display: flex; flex-direction: column; gap: 1.8rem;">
+                <!-- 卡片4: 实时操作日志 -->
+                <div class="card">
+                    <h2>📜 操作日志中心</h2>
+                    <div id="logContainer" class="log-area">
+                        <div class="log-item">✅ 系统就绪，开始测试交互</div>
+                        <div class="log-item">💡 所有操作都会被记录在此</div>
+                    </div>
+                </div>
+
+                <!-- 卡片5: 动态表格测试 -->
+                <div class="card">
+                    <h2>📋 动态表格 (CRUD测试)</h2>
+                    <div style="overflow-x: auto;">
+                        <table id="dataTable">
+                            <thead>
+                                <tr><th>姓名</th><th>职位</th><th>部门</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>张三</td><td>前端架构师</td><td>技术部</td></tr>
+                                <tr><td>李四</td><td>后端开发</td><td>技术部</td></tr>
+                                <tr><td>王芳</td><td>产品经理</td><td>产品部</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex-row" style="margin-top: 0.5rem;">
+                        <button id="addRowBtn" class="primary">➕ 添加行</button>
+                        <button id="delLastRowBtn" class="outline danger">❌ 删除最后一行</button>
+                    </div>
+                    <p style="font-size: 0.7rem; margin-top: 0.5rem; color: var(--text-muted);">* 测试动态DOM操作，日志同步记录</p>
+                </div>
+
+                <!-- 卡片6: 响应式 & 设备信息监控 -->
+                <div class="card">
+                    <h2>📱 响应式 & 环境测试</h2>
+                    <div class="flex-row" style="justify-content: space-between;">
+                        <span>🖥️ 当前视口宽度:</span>
+                        <span id="viewportWidth" class="view-width">-- px</span>
+                    </div>
+                    <div class="flex-row" style="justify-content: space-between; margin-top: 0.5rem;">
+                        <span>🎨 色彩模式:</span>
+                        <span id="themeIndicator" class="view-width">亮色模式</span>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <button id="simulateMobileBtn" class="outline" style="width: 100%;">📲 模拟移动端提示 (缩放测试)</button>
+                    </div>
+                    <p style="font-size: 0.7rem; margin-top: 0.8rem;">※ 调整窗口大小观察宽度变化，验证响应式布局</p>
+                </div>
+            </div>
+        </div>
+        <footer>
+            🧪 综合测试面板 | 适用于前端组件功能验证、样式调试、交互测试 | 内置暗色主题 & 日志系统
+        </footer>
+    </div>
+
+    <script>
+    (function() {
+        // ---------- 全局辅助函数 ----------
+        const logContainer = document.getElementById('logContainer');
+        // 添加日志条目
+        function addLog(message, type = 'info') {
+            const logItem = document.createElement('div');
+            logItem.className = 'log-item';
+            const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+            const prefix = type === 'error' ? '❌' : (type === 'success' ? '✅' : '🔹');
+            logItem.innerHTML = `<span style="color: var(--text-muted);">[${time}]</span> ${prefix} ${message}`;
+            logContainer.appendChild(logItem);
+            logItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            // 保留最多60条日志，避免过多
+            while(logContainer.children.length > 60) logContainer.removeChild(logContainer.firstChild);
+        }
+
+        // 清空日志
+        document.getElementById('clearLogBtn').addEventListener('click', () => {
+            logContainer.innerHTML = '';
+            addLog('日志已清空', 'success');
+        });
+
+        // ---------- 主题切换 ----------
+        const rootElement = document.body;
+        const themeToggle = document.getElementById('themeToggleBtn');
+        const themeIndicator = document.getElementById('themeIndicator');
+        function setTheme(theme) {
+            rootElement.setAttribute('data-theme', theme);
+            if (theme === 'dark') {
+                themeIndicator.innerText = '暗色模式 🌙';
+                themeToggle.innerHTML = '☀️ 亮色模式';
+                localStorage.setItem('ui_theme', 'dark');
+            } else {
+                themeIndicator.innerText = '亮色模式 ☀️';
+                themeToggle.innerHTML = '🌓 暗色模式';
+                localStorage.setItem('ui_theme', 'light');
+            }
+        }
+        const savedTheme = localStorage.getItem('ui_theme') || 'light';
+        setTheme(savedTheme);
+        themeToggle.addEventListener('click', () => {
+            const current = rootElement.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+            addLog(`主题切换为 ${newTheme === 'dark' ? '暗色模式' : '亮色模式'}`, 'success');
+        });
+
+        // 实时时钟
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('zh-CN');
+            document.getElementById('liveClock').innerText = timeStr;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // ---------- 表单测试 (提交记录) ----------
+        const form = document.getElementById('testForm');
+        const submitFormBtn = document.getElementById('submitFormBtn');
+        const resetFormBtn = document.getElementById('resetFormBtn');
+        submitFormBtn.addEventListener('click', () => {
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const role = document.getElementById('role').value;
+            const remark = document.getElementById('remark').value;
+            if(!username) addLog('表单提醒: 用户名为空', 'error');
+            else addLog(`📄 表单数据 | 用户:${username} | 邮箱:${email} | 角色:${role} | 备注:${remark.substring(0,30)}`, 'success');
+        });
+        resetFormBtn.addEventListener('click', () => {
+            document.getElementById('testForm').reset();
+            addLog('表单已重置为默认值', 'info');
+        });
+
+        // ---------- 计数器测试 ----------
+        let counter = 0;
+        const counterDisplay = document.getElementById('counterDisplay');
+        const incBtn = document.getElementById('incBtn');
+        const decBtn = document.getElementById('decBtn');
+        const resetCounter = document.getElementById('resetCounterBtn');
+        function updateCounterDisplay() {
+            counterDisplay.innerText = counter;
+        }
+        incBtn.addEventListener('click', () => {
+            counter++;
+            updateCounterDisplay();
+            addLog(`计数器 +1 → 当前值: ${counter}`, 'info');
+        });
+        decBtn.addEventListener('click', () => {
+            counter--;
+            updateCounterDisplay();
+            addLog(`计数器 -1 → 当前值: ${counter}`, 'info');
+        });
+        resetCounter.addEventListener('click', () => {
+            counter = 0;
+            updateCounterDisplay();
+            addLog(`计数器已归零`, 'success');
+        });
+
+        // alert 测试按钮
+        document.getElementById('alertTestBtn').addEventListener('click', () => {
+            alert('这是一个原生 Alert 测试弹窗\n页面功能正常！');
+            addLog('触发了 alert 弹窗测试', 'info');
+        });
+
+        // 模拟 API 请求 (Fetch 模拟)
+        const mockApiBtn = document.getElementById('mockApiBtn');
+        mockApiBtn.addEventListener('click', async () => {
+            addLog('⏳ 模拟API请求中... (延迟1秒)', 'info');
+            mockApiBtn.disabled = true;
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                // 模拟数据返回
+                const mockData = { userId: 1001, title: '测试数据', status: 'success' };
+                addLog(`📡 API模拟响应成功: ${JSON.stringify(mockData)}`, 'success');
+            } catch(e) {
+                addLog(`模拟请求出错: ${e.message}`, 'error');
+            } finally {
+                mockApiBtn.disabled = false;
+            }
+        });
+
+        // 进度条滑块
+        const progressSlider = document.getElementById('progressSlider');
+        const progressFill = document.getElementById('progressFill');
+        const progressValueSpan = document.getElementById('progressValue');
+        progressSlider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            progressFill.style.width = val + '%';
+            progressValueSpan.innerText = val + '%';
+        });
+        progressSlider.addEventListener('change', (e) => {
+            addLog(`进度条调整为 ${e.target.value}%`, 'info');
+        });
+
+        // 颜色选择器 & 色块
+        const colorPicker = document.getElementById('colorPicker');
+        const colorBox = document.getElementById('colorBox');
+        colorPicker.addEventListener('input', (e) => {
+            colorBox.style.backgroundColor = e.target.value;
+        });
+        colorPicker.addEventListener('change', (e) => {
+            addLog(`🎨 色块背景色更改为 ${e.target.value}`, 'info');
+        });
+
+        // Range 实时值展示
+        const rangeDemo = document.getElementById('rangeDemo');
+        const rangeValueSpan = document.getElementById('rangeValue');
+        rangeDemo.addEventListener('input', (e) => {
+            rangeValueSpan.innerText = e.target.value;
+        });
+        rangeDemo.addEventListener('change', (e) => {
+            addLog(`Range 测试滑块值变为 ${e.target.value}`, 'info');
+        });
+
+        // checkbox 状态测试
+        const acceptTerms = document.getElementById('acceptTerms');
+        const checkTermsBtn = document.getElementById('checkTermsBtn');
+        checkTermsBtn.addEventListener('click', () => {
+            const isChecked = acceptTerms.checked;
+            addLog(`复选框状态: ${isChecked ? '✅ 已同意测试条款' : '❌ 未勾选'}`, 'info');
+        });
+
+        // ---------- 动态表格测试 ----------
+        const tableBody = document.querySelector('#dataTable tbody');
+        function addTableRow() {
+            const newRow = document.createElement('tr');
+            const rowCount = tableBody.rows.length + 1;
+            newRow.innerHTML = `
+                <td>新员工${rowCount}</td>
+                <td>实习岗</td>
+                <td>待分配</td>
+            `;
+            tableBody.appendChild(newRow);
+            addLog(`📌 表格添加新行: 新员工${rowCount}`, 'success');
+        }
+        function deleteLastRow() {
+            if (tableBody.rows.length <= 1) {
+                addLog('⚠️ 至少保留一行数据，无法继续删除', 'error');
+                return;
+            }
+            const lastRow = tableBody.rows[tableBody.rows.length - 1];
+            const name = lastRow.cells[0]?.innerText || '未知';
+            tableBody.removeChild(lastRow);
+            addLog(`🗑️ 删除最后一行: ${name}`, 'info');
+        }
+        document.getElementById('addRowBtn').addEventListener('click', addTableRow);
+        document.getElementById('delLastRowBtn').addEventListener('click', deleteLastRow);
+
+        // 响应式监控: 实时显示视口宽度
+        const viewportSpan = document.getElementById('viewportWidth');
+        function updateViewportWidth() {
+            viewportSpan.innerText = window.innerWidth + ' px';
+        }
+        window.addEventListener('resize', () => {
+            updateViewportWidth();
+            addLog(`📏 视口尺寸变化: ${window.innerWidth}px`, 'info');
+        });
+        updateViewportWidth();
+
+        // 模拟移动端提示按钮
+        document.getElementById('simulateMobileBtn').addEventListener('click', () => {
+            const width = window.innerWidth;
+            if(width <= 760) addLog(`当前已是移动宽度: ${width}px，响应式适配正常`, 'success');
+            else addLog(`当前宽度 ${width}px，可以缩放浏览器宽度测试移动布局 (≤760px)`, 'info');
+        });
+
+        // 额外： 监听表单项变更也可以选择性记录, 但为整洁不加过多
+        // 给所有主要输入框添加变化日志可选但避免太吵，仅演示部分
+        addLog('🎉 页面初始化完成，所有组件已准备就绪', 'success');
+    })();
+    </script>
+</body>
+</html>
